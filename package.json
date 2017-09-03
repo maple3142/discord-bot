@@ -1,0 +1,10 @@
+{
+  "name": "discord_youtube_bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "discord.js": "^11.1.0"
+  }
+}
