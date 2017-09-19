@@ -1,31 +1,27 @@
 const Discord = require('discord.js')
-const axios = require('axios')
+
 const client = new Discord.Client()
 
-const config=require('./config.json')
+const parse = require('./parse')
+
+const config = require('./config.json')
 
 client.on('ready', () => {
-    console.log('Bot Start!')
+	console.log('Bot Start!')
 });
 
-client.on('message',m => {
-    if(m.content.startsWith('/youtube')){
-        let data={
-            q: m.content.split(' ').slice(1).join(' '),
-            part: 'snippet',
-            key: config.YOUTUBE_APIKEY
-        }
-        axios.get('https://www.googleapis.com/youtube/v3/search', {
-			params: data
-		}).then(res=>{
-			let r=''
-            res.data.items.forEach(v=>{
-                r+=`https://youtu.be/${v.id.videoId}\n`
-            })
-			m.reply(r)
-        }).catch(e=>console.error(e.message))
-        
-    }
-});
+client.on('message', async m => {
+	let cmd = parse(m.content)
+	if (cmd.cmd === 'youtube') {
+		let search = cmd.args.join(' ')
+		let result=await require('./cmds/youtube')(search)
+		m.reply(result)
+	}
+	if (cmd.cmd === 'weather') {
+		let search = cmd.args.join(' ')
+		let result = await require('./cmds/weather')(search)
+		m.reply(result?result:'City not found')
+	}
+})
 
 client.login(config.DISCORD_BOT_TOKEN)
