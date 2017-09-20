@@ -7,7 +7,7 @@ module.exports = async function weather(city) {
 	city=city.toLowerCase()
 	try {
 		let r
-		if ((city in cache) && (Date.now()-cache[city].time>7200000)) {//2hours
+		if ((city in cache) && (Date.now()-cache[city].time<=7200000)) {//2hours
 			r=cache[city].data
 		}
 		else {
